@@ -7,6 +7,7 @@
 | 今回は以下の説明は省略します。
 
 * RaspberryPiにNode.jsのインストール（rasbian v9.4）
+* RaspberryPiへのNode.jsのインストール（8.11.3）
 * WindowsPCへのNode.jsのインストール（8.11.3）
 * WindowsPCへのnpmのインストール（5.6.0）
 
@@ -192,7 +193,8 @@ drone.jsの修正（Firebaseの承認を追加）
 | 左メニューの「Project Overview」の右横の「歯車マーク」を選択
 | 「プロジェクトの設定」を押下
 
-| 「アプリ」の"ウェブアプリにFirebaseを追加"を押下
+| 「アプリ」の"</>"を押下
+| 「アプリのニックネーム」に"drone"を押下
 
 | ウェブアプリにFirebaseを追加の//　Initialize Firebase　から　</script>の前までをコピー
 

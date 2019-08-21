@@ -6,8 +6,8 @@ GoogleHomeチーム
 | 今回は以下の説明は省略します。
 
 * GoogleHomeの設定
-* Node.jsのインストール(v8.11.4)
-* npmのインストール(5.6.0)
+* Node.jsのインストール(v10.15.1)
+* npmのインストール(v6.4.1)
 * firebase-toolsのインストール
 
 Google Homeアプリの作成
@@ -19,29 +19,32 @@ Action on Googleにログイン
 | Webブラウザ（Google Chrome）を起動します
 | https://developers.google.com/actions/ にアクセスします。
 
-| 画面右上の「GO TO ACTIONS CONSOLE」を押下
-
 | Googleアカウントでログインします。
-
 
 .. note::
 
    - アカウント：opst.internship.2019@gmail.com
    - パスワード：講師が入力します
 
+| 画面右上の「GO TO ACTIONS CONSOLE」を押下
+
+
 
 プロジェクトの作成
 --------------------------------
-| 「Add/import project」を押下
-| Project Nameに"drone"と入力、「language」は"Japanese"を選択、「conuntry」は"Japan"を選択し「CREATEd PROJECT」を押下
+| 「New Project」を押下
+| Project Nameに"drone"と入力、「language」は"Japanese"を選択、「conuntry」は"Japan"を選択し「Create project」を押下
 
-| Welcome画面では画面右上の「SKIP」を押下
+| Welcome画面では画面左上の「Actions Console」を押下
+
 
 
 Actionを追加
 --------------------------------
+| 先ほど作成したプロジェクト「drone」を選択
+| 「Develop」タブを選択
 | 左のメニューから「Actions」を選択
-| 「ADD YOUR FIRST ACTION」を押下
+| 「Add your first action」を押下
 
 | CREATE ACTIOMでは「Custom intent」を選択し、
 | 「BUILD」を押下
@@ -137,7 +140,8 @@ Firebaaseにログイン
 | Firebaseの左メニューから「Database」を選択
 | 「データベースの作成」を押下
 | 「Cloud Firestore セキュリティルール」では"テストモードで開始"を選択し、
-| 「有効にする」を押下
+| 「次へ」を押下
+| 「完了」を押下
 
 | 画面左上の「Database」は「Realtime Database」を選択
 | nullの右にある「＋」を押下
