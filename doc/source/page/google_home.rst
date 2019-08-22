@@ -269,7 +269,7 @@ DBを更新するFunction（プログラム）を記述
 -----------------------------------------
 WindosのPCで「index.js」をテキストエディタで以下の通りに書き換える
 
-.. code-block:: none
+.. code-block:: js
 
   const functions = require("firebase-functions")
   const admin = require("firebase-admin")

@@ -115,7 +115,7 @@ drone.jsの作成
 | ※「動き」を増やす場合は、このファイルに「動き」を追加します。
 | WindowsのPCで以下のコードをテキストエディタで入力し、「drone.js」として保存
 
-.. code-block:: none
+.. code-block:: js
 
   // モジュール読み込み
   const Drone = require("rolling-spider");

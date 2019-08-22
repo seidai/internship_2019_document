@@ -20,6 +20,6 @@ Auhtor: Seidai Suzuki
 
    /page/overview
    /page/design
-   /page/drone
    /page/google_home
+   /page/drone
    /page/google_home_and_drone
