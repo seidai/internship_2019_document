@@ -124,63 +124,61 @@ drone.jsの作成
   var firebase = require("firebase");
 
   // 各種変数
-  drone.isActive = false;                        // ドローンがアクティブか否か
+  drone.isActive = false; // ドローンがアクティブか否か
 
   // ドローンの初期設定
-  drone.connect( () => {                         // BLE でドローンに接続し、接続できたらコールバック
-  drone.setup( () => {                           // ドローンを初期設定してサービスや特徴を取得、その後コールバック
-   drone.flatTrim();                             // トリムをリセット
-   drone.startPing();                            // 継続的に接続させる
-   drone.flatTrim();                             // トリムをリセット
-   drone.isActive = true;                        // ドローンをアクティブ状態にする
-   console.log(drone.name + " is ready.");       // 準備OKなことをコンソール出力
-  });
+  drone.connect(() => { // BLE でドローンに接続し、接続できたらコールバック
+    drone.setup(() => { // ドローンを初期設定してサービスや特徴を取得、その後コールバック
+      drone.flatTrim(); // トリムをリセット
+      drone.startPing(); // 継続的に接続させる
+      drone.flatTrim(); // トリムをリセット
+      drone.isActive = true; // ドローンをアクティブ状態にする
+      console.log(drone.name + " is ready."); // 準備OKなことをコンソール出力
+    });
   });
 
-  // Initialize Firebase
-  var config = {
-   apiKey: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-   authDomain: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-   databaseURL: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-   projectId: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-   storageBucket: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-   messagingSenderId: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    authDomain: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    databaseURL: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    projectId: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    storageBucket: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    messagingSenderId: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    appId: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
   };
-  firebase.initializeApp(config);
-
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
 
   //database更新時
   var db = firebase.database();
   db.ref("/drone").on("value", function(changedSnapshot) {
-  //値取得
-  var value = changedSnapshot.child("message").val();
-  console.log(value);
-
-  if (value) {
-
-   if (value == 'fly') {
-     console.log('離陸');
-     drone.takeOff();
-
-   } else if (value == 'forward') {
-     console.log('前進');
-     drone.forward( {steps: 10});
-
-   } else if (value == 'down') {
-     console.log('着陸');
-     drone.land();
-
-   } else if (value == 'up') {
-     console.log('上昇');
-     drone.up( {steps: 10});
-
-   }
-
-
-   //Realtime Database に空白を入れる
-   db.ref("/drone").set({"message": ""});
-
-  }
+    //値取得
+    var value = changedSnapshot.child("message").val();
+    console.log(value);
+    if (value) {
+      if (value == 'fly') {
+        console.log('離陸');
+        drone.takeOff();
+      } else if (value == 'forward') {
+        console.log('前進');
+        drone.forward({
+          steps: 10
+        });
+      } else if (value == 'down') {
+        console.log('着陸');
+        drone.land();
+      } else if (value == 'up') {
+        console.log('上昇');
+        drone.up({
+          steps: 10
+        });
+      }
+      //Realtime Database に空白を入れる
+      db.ref("/drone").set({
+        "message": ""
+      });
+    }
   });
 
 
@@ -194,9 +192,16 @@ drone.jsの修正（Firebaseの承認を追加）
 | 「プロジェクトの設定」を押下
 
 | 「アプリ」の"</>"を押下
-| 「アプリのニックネーム」に"drone"を押下
+| 「アプリのニックネーム」に"drone"を入力
+| 「アプリを登録」を押下
 
-| ウェブアプリにFirebaseを追加の//　Initialize Firebase　から　</script>の前までをコピー
+.. image:: /img/Firebase_Add_Web_App.png
+   :scale: 100%
+   :height: 400px
+   :width: 800px
+   :align: left
+
+|　// Your web app's Firebase configuration　から　</script>の前までをコピー
 
 
 .. image:: /img/Firebase_Auth.png
