@@ -272,34 +272,31 @@ WindosのPCで「index.js」をテキストエディタで以下の通りに書�
 .. code-block:: js
 
   // モジュール読み込み
-  const functions = require("firebase-functions")
-  const admin = require("firebase-admin")
-  admin.initializeApp(functions.config().firebase)
+  const functions = require('firebase-functions');
+  const admin = require('firebase-admin');
 
-  //WEB API処理
-  exports.test = functions.https.onRequest((request, response) => {
-    //ログ出力
-    console.log('Request headers: ' + JSON.stringify(request.headers));
-    console.log('Request body: ' + JSON.stringify(request.body));
-    //Dialogflowからのパラメータ取得
-    const message = request.body.queryResult.parameters.message
-    const textResponse = request.body.queryResult.fulfillmentText
-    console.log('message: ' + message);
-    //Databaseへの書き込み情報
-    const path = "/drone"
-    const word = message
-    //Dialogflowへ`speech`と`displayText`の情報を返す
+  admin.initializeApp();
+
+  exports.update = functions.https.onRequest((request, response) => {
+    const ref = admin.database().ref('drone');
+
+    // 更新する値を作成
+    const updates = {
+      message: req.body.queryResult.parameters.message
+    };
+
+    // 更新
+    ref.update(updates);
+
+    // レスポンスを返す
     response.setHeader("Content-Type", "application/json")
     response.send(
       JSON.stringify({
-        "fulfillmentText": textResponse
+        "fulfillmentText": request.body.queryResult.fulfillmentText
       })
     );
-    //Databaseを更新
-    admin.database().ref(path).set({
-      message: word
-    })
   });
+
 
 
 作成したFunctionをFirebaseにデプロイ

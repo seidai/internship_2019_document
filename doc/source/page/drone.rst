@@ -52,8 +52,14 @@ RaspberryPiにアクセス（SSH）
    :width: 800px
    :align: left
 
+| 　
 
-| パスワード入力(講師が入力します)
+.. note::
+
+  - アカウント：pi
+  - パスワード：講師が入力します
+
+
 | 接続完了
 
 
@@ -118,68 +124,57 @@ drone.jsの作成
 .. code-block:: js
 
   // モジュール読み込み
-  const Drone = require("rolling-spider");
-  const drone = new Drone();
-  var request = require('superagent');
-  var firebase = require("firebase");
+  const rollingSpider = require("rolling-spider");
+  const firebase = require("firebase");
 
-  // 各種変数
-  drone.isActive = false; // ドローンがアクティブか否か
+  const drone = new rollingSpider();
+
+  console.log("ドローン接続開始");
 
   // ドローンの初期設定
-  drone.connect(() => { // BLE でドローンに接続し、接続できたらコールバック
-    drone.setup(() => { // ドローンを初期設定してサービスや特徴を取得、その後コールバック
-      drone.flatTrim(); // トリムをリセット
-      drone.startPing(); // 継続的に接続させる
-      drone.flatTrim(); // トリムをリセット
-      drone.isActive = true; // ドローンをアクティブ状態にする
-      console.log(drone.name + " is ready."); // 準備OKなことをコンソール出力
+  drone.connect(() => {
+    drone.setup(() => {
+      drone.flatTrim();
+      drone.startPing();
+      drone.flatTrim();
+      console.log(drone.name + "接続完了"); // 準備OKなことをコンソール出力
     });
   });
 
-  // Your web app's Firebase configuration
+  // firebaseの認証情報を定義
   var firebaseConfig = {
-    apiKey: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    authDomain: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    databaseURL: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    projectId: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    storageBucket: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    messagingSenderId: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-    appId: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    apiKey: "xxxxxxxxxxxxxxx",
+    authDomain: "xxxxxxxxxxxxxxx",
+    databaseURL: "xxxxxxxxxxxxxxx",
+    projectId: "xxxxxxxxxxxxxxx",
+    storageBucket: "xxxxxxxxxxxxxxx",
+    messagingSenderId: "xxxxxxxxxxxxxxx",
+    appId: "xxxxxxxxxxxxxxx"
   };
-  // Initialize Firebase
+  // firebaseの初期設定
   firebase.initializeApp(firebaseConfig);
 
-  //database更新時
-  var db = firebase.database();
-  db.ref("/drone").on("value", function(changedSnapshot) {
-    //値取得
-    var value = changedSnapshot.child("message").val();
-    console.log(value);
-    if (value) {
-      if (value == 'fly') {
+  // データベース（Realtime Database）に接続
+  const realtimeDatabase = firebase.database();
+
+  // データベースの値が変わった時
+  realtimeDatabase.ref("drone").on("value", function(changedSnapshot) {
+
+    // messageの値取得
+    var message = changedSnapshot.child("message").val();
+
+    if (message) {
+      if (message == 'fly') {
         console.log('離陸');
         drone.takeOff();
-      } else if (value == 'forward') {
-        console.log('前進');
-        drone.forward({
-          steps: 10
-        });
-      } else if (value == 'down') {
-        console.log('着陸');
-        drone.land();
-      } else if (value == 'up') {
-        console.log('上昇');
-        drone.up({
-          steps: 10
-        });
       }
-      //Realtime Database に空白を入れる
-      db.ref("/drone").set({
-        "message": ""
-      });
     }
+    // データベースのmessageを空（""）に戻す
+    realtimeDatabase.ref("drone").update({
+      "message": ""
+    });
   });
+
 
 
 drone.jsの修正（Firebaseの承認を追加）
