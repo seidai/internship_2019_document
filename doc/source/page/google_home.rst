@@ -282,7 +282,7 @@ WindosのPCで「index.js」をテキストエディタで以下の通りに書�
 
     // 更新する値を作成
     const updates = {
-      message: req.body.queryResult.parameters.message
+      message: request.body.queryResult.parameters.message
     };
 
     // 更新
